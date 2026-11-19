@@ -59,11 +59,11 @@ Before you start, please verify:
 2. Set the default catalog. Everything you build in the SQL Track goes into the schema `sql_sandbox`, which Lab 0 already created for you:
 
 ```sql
-USE CATALOG sunny_bay_roastery;
+USE CATALOG sunny_bay_germany;
 ```
 
 > [!IMPORTANT]
-> If you used a different catalog name in Lab 0, replace `sunny_bay_roastery` with your catalog. If you used a **prefix**, all table names start with it (e.g. `silver.jd_customer` instead of `silver.customer`). If you share the catalog with other participants, also put your prefix in front of the tables you create in `sql_sandbox` (e.g. `sql_sandbox.jd_demo_customer`).
+> If you used a different catalog name in Lab 0, replace `sunny_bay_germany` with your catalog. If you used a **prefix**, all table names start with it (e.g. `silver.jd_customer` instead of `silver.customer`). If you share the catalog with other participants, also put your prefix in front of the tables you create in `sql_sandbox` (e.g. `sql_sandbox.jd_demo_customer`).
 
 3. Take a first look at the silver tables:
 

@@ -35,11 +35,11 @@ In **Lab 0** you ran one notebook that set everything up: it generated the sales
 ## Instructions
 
 Before you start, please verify:
-- You have completed **Lab 0** and its setup job shows **Succeeded** — this means the `sunny_bay_roastery` catalog and its `gold` tables exist.
+- You have completed **Lab 0** and its setup job shows **Succeeded** — this means the `sunny_bay_germany` catalog and its `gold` tables exist.
 - You are signed in to your Databricks workspace (Free Edition is fine).
 
 > [!NOTE]
-> This lab uses the default catalog name `sunny_bay_roastery`. If you set a different catalog or a `prefix` in Lab 0, substitute it wherever you see `sunny_bay_roastery` or a table name below.
+> This lab uses the default catalog name `sunny_bay_germany`. If you set a different catalog or a `prefix` in Lab 0, substitute it wherever you see `sunny_bay_germany` or a table name below.
 
 **Step 1: Get Your Bearings in the Workspace**
 
@@ -73,7 +73,7 @@ You now know the places you will return to all day. Everything in the workshop i
 
 3. Read the answer, then try a workshop-specific one:
 
-   > *"What columns are in the sunny_bay_roastery.gold.fact_coffee_sales table?"*
+   > *"What columns are in the sunny_bay_germany.gold.fact_coffee_sales table?"*
 
 <div style="text-align:left;">
   <img src="./artifacts/screenshots/Lab1_GenieCode_Panel.png" width="35%">
@@ -88,11 +88,11 @@ You learned where your AI assistant lives and that it already knows your data. F
 
 **Step 3: Open Unity Catalog and Find Your Data**
 
-**Unity Catalog** is where all of Sunny Bay's data lives, governed in one place. Every table has a three-level address: **`catalog.schema.table`** — for example `sunny_bay_roastery.gold.fact_coffee_sales`.
+**Unity Catalog** is where all of Sunny Bay's data lives, governed in one place. Every table has a three-level address: **`catalog.schema.table`** — for example `sunny_bay_germany.gold.fact_coffee_sales`.
 
 1. In the sidebar, click **Catalog**.
 
-2. Expand the **`sunny_bay_roastery`** catalog. You will see three schemas that match the medallion layers:
+2. Expand the **`sunny_bay_germany`** catalog. You will see three schemas that match the medallion layers:
    - **`bronze`** — raw data exactly as it arrived from Sunny Bay's source systems: the café cash registers (`pos_*`), the online shop (`web_*`), the CRM (`crm_*`), the ERP (`erp_*`), HR (`hr_employees`) and reference data — plus a `raw` Volume with the original files.
    - **`silver`** — cleansed data, integrated into business objects such as `customer`, `product`, `sales_order` and `sales_order_line`.
    - **`gold`** — business-ready tables, ready for reporting and AI.
@@ -216,11 +216,11 @@ So far you have *read* the gold data. In this optional add-on you will do a litt
 
 2. In the Genie prompt box, describe the dataset you want. Paste:
 
-   > *"Build a table of the top products by total gross revenue. Join `sunny_bay_roastery.gold.fact_coffee_sales` to `sunny_bay_roastery.gold.dim_product` on `product_key`, group by `product_name`, sum `gross_revenue_eur` as `total_revenue_eur`, and sort from highest to lowest."*
+   > *"Build a table of the top products by total gross revenue. Join `sunny_bay_germany.gold.fact_coffee_sales` to `sunny_bay_germany.gold.dim_product` on `product_key`, group by `product_name`, sum `gross_revenue_eur` as `total_revenue_eur`, and sort from highest to lowest."*
 
 3. Review the flow Genie builds — a source, a join, an aggregate, and a sort — and **preview** the result right in the canvas. Each node is a transformation you can see, reorder, and edit, so the logic stays transparent.
 
-4. *(Optional)* Save the output to a new gold table, for example `sunny_bay_roastery.gold.top_products_by_revenue`, and run it.
+4. *(Optional)* Save the output to a new gold table, for example `sunny_bay_germany.gold.top_products_by_revenue`, and run it.
 
 **💡 What just happened?**
 

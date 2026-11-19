@@ -29,9 +29,9 @@ Before you start, please verify:
 - A **SQL warehouse** (Pro or serverless) is available and selectable for Genie queries.  
 
 > [!NOTE]
-> A ready-made **"Sunny Bay Sales Genie (Fallback)"** agent was deployed automatically during the Lab 0 setup. It already has the metric view, instructions, and the trusted query you will build below. If you run short on time or get stuck, open that agent from the Genie Agents list and use it — but we strongly encourage you to build your own first to learn how each piece fits together.
+> A ready-made **"Sunny Bay Germany Sales Genie (Fallback)"** agent was deployed automatically during the Lab 0 setup. It already has the metric view, instructions, and the trusted query you will build below. If you run short on time or get stuck, open that agent from the Genie Agents list and use it — but we strongly encourage you to build your own first to learn how each piece fits together.
 
-**Step 1: Create the "Sunny Bay Sales Genie" Agent**
+**Step 1: Create the "Sunny Bay Germany Sales Genie" Agent**
 
 1. In the Databricks workspace sidebar, click **Genie Agents** (under the **SQL** section).  
 2. Click **New**.  
@@ -43,7 +43,7 @@ Before you start, please verify:
 ![](./artifacts/screenshots/Genie_SetDataSource.png)
 
 4. Once the Genie Agent is created, fill in the basic information under "Configure" -> "About" :
-   - **Title:** `Sunny Bay Sales Genie`  
+   - **Title:** `Sunny Bay Germany Sales Genie`  
    - **Description:**   “Ask questions about Sunny Bay Roastery coffee sales, customers, products, and stores using governed metrics from the Sunny Bay metric view.”  
    - Alternatively, you can use the AI generated description, which is more elaborate.
    - **Thumbnail:** Download the [Genie Agent thumbnail](./artifacts/Lab%204%20-%20BI%20Meets%20AI/genie_thumbnail.jpeg) and upload it as the thumbnail image for your Genie Agent.
@@ -100,7 +100,7 @@ SELECT
   store_online,
   MEASURE(total_gross_revenue_eur) AS total_gross_revenue_eur
 FROM
-  sunny_bay_roastery.gold.sm_fact_coffee_sales_genie
+  sunny_bay_germany.gold.sm_fact_coffee_sales_genie
 WHERE
   `date` IS NOT NULL
   AND store_online IS NOT NULL
@@ -130,7 +130,7 @@ ORDER BY
   store_online,
   MEASURE(total_gross_revenue_eur) AS total_gross_revenue_eur
 FROM
-  sunny_bay_roastery.gold.sm_fact_coffee_sales_genie
+  sunny_bay_germany.gold.sm_fact_coffee_sales_genie
 WHERE
   `date` IS NOT NULL
   AND store_online = :onlinesales

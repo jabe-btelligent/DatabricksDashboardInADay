@@ -1,7 +1,7 @@
 resources:
   pipelines:
-    sunny_bay_roastery_pipeline:
-      name: sunny_bay_roastery
+    sunny_bay_germany_pipeline:
+      name: sunny_bay_germany
       catalog: ${var.catalog}
       schema: bronze
       serverless: true

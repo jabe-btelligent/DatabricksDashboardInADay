@@ -43,8 +43,8 @@ SELECT
     ROUND(SUM(fcs.gross_revenue_eur), 2) AS total_revenue_eur,
     ROUND(SUM(fcs.net_revenue_eur), 2) AS total_net_revenue_eur,
     COUNT(DISTINCT fcs.order_id) AS total_orders
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_store AS ds
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_store AS ds
   ON fcs.store_key = ds.store_key
 GROUP BY ds.store_name
 ORDER BY total_revenue_eur DESC;
@@ -60,8 +60,8 @@ SELECT
     dp.product_category,
     ROUND(SUM(fcs.gross_revenue_eur), 2) AS total_revenue_eur,
     SUM(fcs.quantity_sold) AS total_units_sold
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_product AS dp
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_product AS dp
   ON fcs.product_key = dp.product_key
 GROUP BY dp.product_name, dp.product_category
 ORDER BY total_revenue_eur DESC
@@ -78,8 +78,8 @@ SELECT
     dd.day_of_week,
     ROUND(SUM(fcs.gross_revenue_eur), 2) AS total_revenue_eur,
     COUNT(DISTINCT fcs.order_id) AS total_orders
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_date AS dd
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_date AS dd
   ON fcs.date_key = dd.date_key
 GROUP BY dd.day_name, dd.day_of_week
 ORDER BY dd.day_of_week;
@@ -94,8 +94,8 @@ SELECT
     dd.year,
     ROUND(SUM(fcs.gross_revenue_eur), 2) AS annual_revenue_eur,
     COUNT(DISTINCT fcs.order_id) AS total_orders
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_date AS dd
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_date AS dd
   ON fcs.date_key = dd.date_key
 GROUP BY dd.year
 ORDER BY dd.year;
@@ -118,7 +118,7 @@ Ad-hoc queries are great for exploration, but business users need consistent, re
 This view aggregates revenue, cost, and profit by month and store. Other analysts or dashboards can query it directly.
 
 ```sql
-CREATE OR REPLACE VIEW sunny_bay_roastery.gold.vw_monthly_revenue_summary AS
+CREATE OR REPLACE VIEW sunny_bay_germany.gold.vw_monthly_revenue_summary AS
 SELECT
     dd.year,
     dd.month,
@@ -129,22 +129,22 @@ SELECT
     ROUND(SUM(fcs.cost_of_goods_eur), 2) AS monthly_cogs_eur,
     ROUND(SUM(fcs.gross_revenue_eur) - SUM(fcs.cost_of_goods_eur) - SUM(fcs.vat_eur), 2) AS monthly_profit_eur,
     COUNT(DISTINCT fcs.order_id) AS monthly_orders
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_date AS dd
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_date AS dd
   ON fcs.date_key = dd.date_key
-INNER JOIN sunny_bay_roastery.gold.dim_store AS ds
+INNER JOIN sunny_bay_germany.gold.dim_store AS ds
   ON fcs.store_key = ds.store_key
 GROUP BY dd.year, dd.month, ds.store_name, ds.is_online;
 ```
 
 After running this, verify the view exists in Unity Catalog:
 
-1. Navigate to **Catalog > sunny_bay_roastery > gold** in the sidebar.
+1. Navigate to **Catalog > sunny_bay_germany > gold** in the sidebar.
 2. You should see `vw_monthly_revenue_summary` listed as a view.
 3. Query it to confirm:
 
 ```sql
-SELECT * FROM sunny_bay_roastery.gold.vw_monthly_revenue_summary
+SELECT * FROM sunny_bay_germany.gold.vw_monthly_revenue_summary
 WHERE year = YEAR(current_date())
 ORDER BY month, store_name;
 ```
@@ -154,7 +154,7 @@ ORDER BY month, store_name;
 This view ranks every product by total revenue, making it easy to identify top and bottom performers.
 
 ```sql
-CREATE OR REPLACE VIEW sunny_bay_roastery.gold.vw_product_performance AS
+CREATE OR REPLACE VIEW sunny_bay_germany.gold.vw_product_performance AS
 SELECT
     dp.product_name,
     dp.product_category,
@@ -163,8 +163,8 @@ SELECT
     SUM(fcs.quantity_sold)                                          AS total_units_sold,
     ROUND(SUM(fcs.gross_revenue_eur) / NULLIF(SUM(fcs.quantity_sold), 0), 2) AS avg_revenue_per_unit,
     RANK() OVER (ORDER BY SUM(fcs.gross_revenue_eur) DESC)         AS revenue_rank
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_product AS dp
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_product AS dp
   ON fcs.product_key = dp.product_key
 GROUP BY dp.product_name, dp.product_category, dp.product_subcategory;
 ```
@@ -172,7 +172,7 @@ GROUP BY dp.product_name, dp.product_category, dp.product_subcategory;
 Query the view to see the ranking:
 
 ```sql
-SELECT * FROM sunny_bay_roastery.gold.vw_product_performance
+SELECT * FROM sunny_bay_germany.gold.vw_product_performance
 ORDER BY revenue_rank;
 ```
 
@@ -222,8 +222,8 @@ The Databricks SQL Editor lets you save queries for later reuse and share them w
 
 ```sql
 SELECT store_name, SUM(gross_revenue_eur) AS revenue
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_store AS ds ON fcs.store_key = ds.store_key
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_store AS ds ON fcs.store_key = ds.store_key
 GROUP BY store_name;
 ```
 
@@ -248,8 +248,8 @@ SELECT
       (SUM(fcs.gross_revenue_eur) - LAG(SUM(fcs.gross_revenue_eur)) OVER (ORDER BY dd.year, dd.month))
       / NULLIF(LAG(SUM(fcs.gross_revenue_eur)) OVER (ORDER BY dd.year, dd.month), 0) * 100
     , 2) AS mom_growth_pct
-FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-INNER JOIN sunny_bay_roastery.gold.dim_date AS dd ON fcs.date_key = dd.date_key
+FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+INNER JOIN sunny_bay_germany.gold.dim_date AS dd ON fcs.date_key = dd.date_key
 GROUP BY dd.year, dd.month
 ORDER BY dd.year, dd.month;
 ```
@@ -270,9 +270,9 @@ SELECT * FROM (
     product_name,
     store_name,
     SUM(gross_revenue_eur) AS total_rev
-  FROM sunny_bay_roastery.gold.fact_coffee_sales AS fcs
-  INNER JOIN sunny_bay_roastery.gold.dim_product AS dp ON fcs.product_key = dp.product_key
-  INNER JOIN sunny_bay_roastery.gold.dim_store AS ds ON fcs.store_key = ds.store_key
+  FROM sunny_bay_germany.gold.fact_coffee_sales AS fcs
+  INNER JOIN sunny_bay_germany.gold.dim_product AS dp ON fcs.product_key = dp.product_key
+  INNER JOIN sunny_bay_germany.gold.dim_store AS ds ON fcs.store_key = ds.store_key
   GROUP BY product_name, store_name
 )
 WHERE total_rev > 10000
@@ -296,7 +296,7 @@ ORDER BY total_rev DESC;
 If you want to go further with **Genie Code** outside the SQL Editor, click **New** → **Dashboard**, open **Genie Code** and ask it to build a dashboard in one prompt, for example:
 
 ```text
-Build a sales analytics dashboard for Sunny Bay Roastery from the sunny_bay_roastery.gold schema: revenue (EUR) over time, revenue by store, top 10 products and the split between café and online sales.
+Build a sales analytics dashboard for Sunny Bay Roastery from the sunny_bay_germany.gold schema: revenue (EUR) over time, revenue by store, top 10 products and the split between café and online sales.
 ```
 
 Genie Code can name the dashboard, add the datasets and create the visuals. Refine the result with follow-up prompts such as *"add a filter for the store"*.
@@ -310,7 +310,7 @@ Genie Code can name the dashboard, add the datasets and create the visuals. Refi
 **Lakeflow Designer** is a visual, low-code interface for building data pipelines. In this optional step, you will explore an existing pipeline visually — no Spark or Python required.
 
 1. In the Databricks sidebar, click **Jobs & Pipelines**.
-2. Find the pipeline with the suffix **sunny_bay_roastery** (this was deployed by Lab 0).
+2. Find the pipeline with the suffix **sunny_bay_germany** (this was deployed by Lab 0).
 3. Click on the pipeline to open the monitoring view.
 4. Observe the **DAG (Directed Acyclic Graph)** — it shows how data flows from the raw files into bronze streaming tables, through the silver business objects to the gold materialized views.
 5. Click on individual nodes to see:

@@ -46,7 +46,7 @@ SELECT
     monthly_gross_revenue_eur,
     monthly_profit_eur,
     monthly_orders
-FROM sunny_bay_roastery.gold.vw_monthly_revenue_summary
+FROM sunny_bay_germany.gold.vw_monthly_revenue_summary
 WHERE year = YEAR(CURRENT_DATE())
 ORDER BY month DESC, store_name;
 ```
@@ -87,7 +87,7 @@ SELECT
     year,
     month,
     monthly_gross_revenue_eur
-FROM sunny_bay_roastery.gold.vw_monthly_revenue_summary
+FROM sunny_bay_germany.gold.vw_monthly_revenue_summary
 WHERE year = YEAR(CURRENT_DATE())
   AND month = MONTH(CURRENT_DATE())
   AND monthly_gross_revenue_eur < 11000
@@ -151,7 +151,7 @@ If you are running this lab in a Databricks workspace with access to GitHub, dow
 
 **2. Upload the CSV to Unity Catalog**
 
-1. In the sidebar, navigate to **Catalog > sunny_bay_roastery > gold**.
+1. In the sidebar, navigate to **Catalog > sunny_bay_germany > gold**.
 2. Click the **Create Table** button and select **Upload file**.
 3. Select or drag the `SQL_Store_Revenue_Targets.csv` file.
 4. Databricks will preview the data and infer column types. Verify that:
@@ -165,7 +165,7 @@ If you are running this lab in a Databricks workspace with access to GitHub, dow
 Confirm the upload by querying the new table:
 
 ```sql
-SELECT * FROM sunny_bay_roastery.gold.revenue_targets;
+SELECT * FROM sunny_bay_germany.gold.revenue_targets;
 ```
 
 You should see 6 rows — one target per store.
@@ -186,8 +186,8 @@ SELECT
       (mrs.monthly_gross_revenue_eur - rt.target_monthly_revenue_eur)
       / rt.target_monthly_revenue_eur * 100
     , 1) AS variance_pct
-FROM sunny_bay_roastery.gold.vw_monthly_revenue_summary AS mrs
-INNER JOIN sunny_bay_roastery.gold.revenue_targets AS rt
+FROM sunny_bay_germany.gold.vw_monthly_revenue_summary AS mrs
+INNER JOIN sunny_bay_germany.gold.revenue_targets AS rt
   ON mrs.store_name = rt.store_name
 WHERE mrs.year = YEAR(CURRENT_DATE())
 ORDER BY mrs.month, variance_pct ASC;
@@ -198,7 +198,7 @@ ORDER BY mrs.month, variance_pct ASC;
 Wrap the comparison into a reusable view:
 
 ```sql
-CREATE OR REPLACE VIEW sunny_bay_roastery.gold.vw_actual_vs_target AS
+CREATE OR REPLACE VIEW sunny_bay_germany.gold.vw_actual_vs_target AS
 SELECT
     mrs.store_name,
     mrs.year,
@@ -215,15 +215,15 @@ SELECT
       WHEN mrs.monthly_gross_revenue_eur >= rt.target_monthly_revenue_eur * 0.9 THEN 'At Risk'
       ELSE 'Below Target'
     END AS status
-FROM sunny_bay_roastery.gold.vw_monthly_revenue_summary AS mrs
-INNER JOIN sunny_bay_roastery.gold.revenue_targets AS rt
+FROM sunny_bay_germany.gold.vw_monthly_revenue_summary AS mrs
+INNER JOIN sunny_bay_germany.gold.revenue_targets AS rt
   ON mrs.store_name = rt.store_name;
 ```
 
 Query the view for the current year to see which stores are meeting their targets:
 
 ```sql
-SELECT * FROM sunny_bay_roastery.gold.vw_actual_vs_target
+SELECT * FROM sunny_bay_germany.gold.vw_actual_vs_target
 WHERE year = YEAR(CURRENT_DATE())
 ORDER BY month, status DESC, variance_pct ASC;
 ```
@@ -261,7 +261,7 @@ The Genie One home screen surfaces:
 **3. Find your work**
 
 1. Use the search bar to search for `sunny_bay` — you should find your gold tables, views, and saved queries.
-2. Click on **Dashboards** in the left navigation to see all published dashboards. Look for `[Final] Sunny Bay Roastery - Sales Report` (deployed by Lab 0).
+2. Click on **Dashboards** in the left navigation to see all published dashboards. Look for `[Final] Sunny Bay Germany - Sales Report` (deployed by Lab 0).
 3. Open the dashboard as a **consumer** — notice how it uses the same gold data you built and enriched.
 
 **4. Preview the Genie experience**

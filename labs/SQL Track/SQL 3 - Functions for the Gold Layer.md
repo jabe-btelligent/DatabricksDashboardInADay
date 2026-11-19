@@ -29,7 +29,7 @@ Before you start, please verify:
 1. Set the default catalog again (replace it if you used a different catalog in Lab 0):
 
 ```sql
-USE CATALOG sunny_bay_roastery;
+USE CATALOG sunny_bay_germany;
 ```
 
 **Step 1: Flatten Arrays with EXPLODE**

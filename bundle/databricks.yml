@@ -1,5 +1,5 @@
 bundle:
-  name: sunny_bay_roastery
+  name: sunny_bay_germany
   uuid: bc0b18ce-7bd2-41ef-9afa-69c09bd218f7
 include:
 - resources/*.yml
@@ -7,7 +7,7 @@ include:
 variables:
   catalog:
     description: The catalog to use
-    default: sunny_bay_roastery
+    default: sunny_bay_germany
   bronze_schema:
     description: The bronze schema to use
   silver_schema:
@@ -25,7 +25,7 @@ targets:
     mode: development
     default: true
     variables:
-      catalog: sunny_bay_roastery
+      catalog: sunny_bay_germany
       bronze_schema: bronze
       silver_schema: silver
       gold_schema: gold
