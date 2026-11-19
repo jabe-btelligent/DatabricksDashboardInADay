@@ -55,12 +55,16 @@ Sunny Bay's raw data comes from several operational source systems – café cas
 
 | Lab | Concepts | Prerequisite |
 |-----|----------|--------------|
-| **SQL 1 – Filtering, Aggregating and Joining** ([guide](labs/SQL%20Track/SQL%201%20-%20Filtering,%20Aggregating%20and%20Joining.ipynb)) | WHERE, GROUP BY / HAVING, INNER / LEFT / FULL OUTER / SEMI / ANTI / CROSS JOIN | Lab 0 |
-| **SQL 2 – Combining and Analyzing Data** ([guide](labs/SQL%20Track/SQL%202%20-%20Combining%20and%20Analyzing%20Data.ipynb)) | UNION / MINUS / INTERSECT, WITH … AS, window functions with PARTITION BY, ROLLUP / CUBE, WITH RECURSIVE | SQL 1 |
-| **SQL 3 – Functions for the Gold Layer** ([guide](labs/SQL%20Track/SQL%203%20-%20Functions%20for%20the%20Gold%20Layer.ipynb)) | EXPLODE, QUALIFY, COALESCE, CASE / IFF, DECODE, MAX_BY, FILTER (WHERE …), DATEADD | SQL 2 |
-| **SQL Solutions** ([notebook](labs/SQL%20Track/SQL%20Solutions.ipynb)) | Runnable solutions of all 🏋️ exercises of SQL 1–3 – try each exercise yourself first | – |
+| **SQL 1 – Filtering, Aggregating and Joining** ([guide](labs/SQL%20Track/en/SQL%201%20-%20Filtering,%20Aggregating%20and%20Joining.ipynb) · [🇩🇪](labs/SQL%20Track/de/SQL%201%20-%20Filtern,%20Aggregieren%20und%20Verkn%C3%BCpfen.ipynb)) | WHERE, GROUP BY / HAVING, INNER / LEFT / FULL OUTER / SEMI / ANTI / CROSS JOIN | Lab 0 |
+| **SQL 2 – Combining and Analyzing Data** ([guide](labs/SQL%20Track/en/SQL%202%20-%20Combining%20and%20Analyzing%20Data.ipynb) · [🇩🇪](labs/SQL%20Track/de/SQL%202%20-%20Daten%20kombinieren%20und%20analysieren.ipynb)) | UNION / MINUS / INTERSECT, WITH … AS, window functions with PARTITION BY, ROLLUP / CUBE, WITH RECURSIVE | SQL 1 |
+| **SQL 3 – Functions for the Gold Layer** ([guide](labs/SQL%20Track/en/SQL%203%20-%20Functions%20for%20the%20Gold%20Layer.ipynb) · [🇩🇪](labs/SQL%20Track/de/SQL%203%20-%20Funktionen%20f%C3%BCr%20den%20Gold%20Layer.ipynb)) | EXPLODE, QUALIFY, COALESCE, CASE / IFF, DECODE, MAX_BY, FILTER (WHERE …), DATEADD | SQL 2 |
+| **SQL Solutions** ([notebook](labs/SQL%20Track/en/SQL%20Solutions.ipynb) · [🇩🇪](labs/SQL%20Track/de/SQL%20L%C3%B6sungen.ipynb)) | Runnable solutions of all 🏋️ exercises of SQL 1–3 – try each exercise yourself first | – |
+
+The SQL Track is available in English (`labs/SQL Track/en/`) and German (`labs/SQL Track/de/`, 🇩🇪 links above) – same exercises, same SQL, German explanations.
 
 For instructors: each lab has a presentation in [labs/SQL Track/Slides/](labs/SQL%20Track/Slides/) that explains *why* and *how* the concepts are used – open it in the workspace (or on GitHub) and present it before the hands-on part.
+
+To take home: the [SQL Cheat Sheet – Building the Gold Layer](labs/SQL%20Track/en/SQL%20Cheat%20Sheet%20-%20Building%20the%20Gold%20Layer.pdf) ([🇩🇪 Den Gold Layer bauen](labs/SQL%20Track/de/SQL%20Cheat%20Sheet%20-%20Den%20Gold%20Layer%20bauen.pdf); A3 landscape PDF, sources in `docs/`) puts every concept of SQL 1–3 on one page, organized along the way from source systems to a star schema.
 
 ### 🔎 Deep Dives (Optional)
 
