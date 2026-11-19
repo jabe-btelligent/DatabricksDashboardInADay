@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<title>SQL Cheat Sheet – Den Gold Layer bauen</title>
+<style>
+@page { size: A3 landscape; margin: 0; }
+:root {
+  --green: #2F4F3E; --leaf: #4E7B61; --pastel: #7DAF8B; --beige: #C8B79A;
+  --brown: #A64B2A; --fresh: #8CC665; --mint: #D1E3D1;
+  --paper: #FBFAF6; --ink: #1F2A24; --muted: #5B6B61; --codebg: #F1F6F1;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { width: 420mm; height: 297mm; background: var(--paper); color: var(--ink);
+  font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 7.6pt; line-height: 1.3;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { width: 420mm; height: 297mm; padding: 7mm 9mm 5.5mm; display: flex; flex-direction: column; gap: 2.8mm; overflow: hidden; }
+header { display: flex; align-items: center; gap: 6mm; }
+header img { height: 18mm; }
+header .title h1 { margin: 0; font-size: 23pt; letter-spacing: 0.2pt; color: var(--green); font-weight: 700; }
+header .title p { margin: 0.6mm 0 0; font-size: 10pt; color: var(--muted); }
+.flow { margin-left: auto; display: flex; align-items: stretch; gap: 1.6mm; }
+.flow div { border-radius: 2.2mm; padding: 1.8mm 3mm; min-width: 31mm; font-size: 7.6pt; line-height: 1.25; }
+.flow b { display: block; font-size: 9pt; margin-bottom: 0.4mm; }
+.flow .src { background: #fff; border: 0.3mm solid var(--beige); }
+.flow .br { background: #E9DCCB; }
+.flow .si { background: #E6EBE7; }
+.flow .go { background: var(--green); color: #fff; }
+.flow .go b { color: #F3D98B; }
+.flow .ar { min-width: 0; padding: 0; align-self: center; color: var(--leaf); font-size: 15pt; }
+.recipe { background: var(--green); color: #fff; border-radius: 3mm; padding: 2mm 3mm 2.4mm; }
+.recipe h2 { margin: 0 0 1.5mm; font-size: 10.5pt; color: #fff; }
+.recipe h2 span { font-weight: 400; color: var(--mint); font-size: 8.6pt; margin-left: 2mm; }
+.steps { display: flex; align-items: stretch; gap: 1.2mm; }
+.step { flex: 1; display: flex; gap: 1.6mm; background: rgba(255,255,255,0.08); border-radius: 2mm; padding: 1.4mm 1.8mm; }
+.step .num { flex: none; width: 5.6mm; height: 5.6mm; border-radius: 50%; background: var(--fresh); color: var(--green);
+  font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 9pt; }
+.step .stxt { display: flex; flex-direction: column; gap: 0.8mm; min-width: 0; }
+.step .stxt b { font-size: 8.8pt; }
+.step code { background: rgba(255,255,255,0.93); color: var(--ink); font-size: 6.5pt; padding: 0.5mm 1mm; border-radius: 1mm; white-space: normal; }
+.step .why { color: var(--mint); font-size: 7.3pt; }
+.arrow { align-self: center; color: var(--fresh); font-size: 14pt; font-weight: 700; }
+.grid { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr) minmax(0, 1fr) minmax(0, 1.1fr); gap: 2.8mm; min-height: 0; }
+.col { display: flex; flex-direction: column; gap: 2.6mm; min-height: 0; }
+.card { background: #fff; border: 0.3mm solid #E3E0D6; border-top: 1.2mm solid var(--leaf); border-radius: 2.4mm; padding: 1.9mm 2.8mm 2.1mm; }
+.card.wide { border-top-color: var(--green); }
+.card h2 { margin: 0 0 1.2mm; font-size: 10pt; color: var(--green); }
+.card p, .card ul, .card ol { margin: 1.2mm 0 0; }
+.card ul, .card ol { padding-left: 4.2mm; }
+.card li { margin-bottom: 0.8mm; }
+.note { color: var(--muted); font-size: 7.4pt; }
+code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 7.1pt; background: var(--codebg); padding: 0.15mm 0.7mm; border-radius: 0.8mm; }
+pre.code { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 6.6pt; line-height: 1.32; background: var(--codebg);
+  border-left: 0.8mm solid var(--pastel); border-radius: 1.2mm; padding: 1.4mm 2mm; margin: 1.2mm 0 0; white-space: pre; overflow: hidden; }
+pre.anat { font-size: 6.6pt; border-left-color: var(--green); }
+.k { color: var(--green); font-weight: 700; }
+.f { color: #8A5A1F; font-weight: 600; }
+.s { color: var(--brown); }
+.n { color: #2E6E8E; }
+.c { color: #8C9A90; font-style: italic; }
+table { border-collapse: collapse; width: 100%; }
+table.mini { margin-top: 1.4mm; }
+table.mini td, table.mini th { padding: 0.7mm 1.2mm; border-bottom: 0.2mm solid #ECE8DE; vertical-align: top; text-align: left; }
+table.mini th { color: var(--muted); font-weight: 600; font-size: 7.2pt; }
+table.mini td:first-child { white-space: nowrap; }
+table.order td { padding: 0.35mm 1.2mm; border-bottom: 0.2mm solid #ECE8DE; }
+table.order td:first-child { width: 5mm; color: #fff; background: var(--leaf); text-align: center; font-weight: 700; border-bottom-color: #fff; }
+table.order tr:nth-child(6) td:first-child { background: var(--brown); }
+table.joins td { padding: 0.6mm 1.2mm; border-bottom: 0.2mm solid #ECE8DE; vertical-align: middle; }
+table.joins td:first-child { width: 15mm; }
+table.joins .ex { color: var(--muted); font-size: 7.4pt; width: 44%; }
+.jn { font-family: "SF Mono", Menlo, monospace; color: var(--green); font-size: 7.8pt; }
+svg.venn { width: 13mm; height: 7.8mm; display: block; }
+.fn { padding: 1.1mm 0 1.3mm; border-bottom: 0.2mm dashed #E3E0D6; }
+.fn:last-child { border-bottom: none; padding-bottom: 0; }
+.fnh b { font-family: "SF Mono", Menlo, monospace; color: var(--green); font-size: 8pt; }
+.fnh span { color: var(--muted); margin-left: 1mm; }
+.fn pre.code { margin-top: 0.8mm; }
+.fn p.note { margin-top: 0.6mm; }
+.rules { display: flex; justify-content: space-between; gap: 6mm; border-top: 0.4mm solid var(--beige); padding-top: 1.8mm; font-size: 7.7pt; color: var(--ink); }
+.rules .where { color: var(--muted); text-align: right; }
+</style></head>
+<body><div class="page">
+<header>
+  <img src="assets/sunny_bay_roastery_logo.png" alt="Sunny Bay Roastery">
+  <div class="title"><h1>SQL Cheat Sheet · Den Gold Layer bauen</h1>
+  <p>Alles aus dem SQL Track (SQL 1–3) auf einer Seite – Databricks SQL am Beispiel der Sunny-Bay-Roastery-Daten</p></div>
+  <div class="flow">
+    <div class="src"><b>Quellsysteme</b>POS · Webshop · CRM<br>ERP · HR · Referenzdaten</div><div class="ar">›</div>
+    <div class="br"><b>🥉 Bronze</b>Rohdaten,<br>genau wie geliefert</div><div class="ar">›</div>
+    <div class="si"><b>🥈 Silver</b>bereinigte, integrierte<br>Business-Objekte</div><div class="ar">›</div>
+    <div class="go"><b>🥇 Gold</b>Sternschema: Fakten +<br>Dimensionen für BI</div>
+  </div>
+</header>
+<section class="recipe"><h2>🧭 Das Rezept – von den Quellsystemen zum Sternschema<span>dieselben Schritte, die die Sunny-Bay-Pipeline in Silver und Gold geht</span></h2>
+<div class="steps"><div class="step"><div class="num">1</div><div class="stxt"><b>Ungültiges filtern</b><code><span class="k">WHERE</span> status_code = <span class="s">&#x27;C&#x27;</span></code><span class="why">storniert, abgebrochen, Test</span></div></div><div class="arrow">›</div><div class="step"><div class="num">2</div><div class="stxt"><b>Neueste Version</b><code><span class="k">QUALIFY</span> <span class="f">ROW_NUMBER</span>() <span class="k">OVER</span> (…) = <span class="n">1</span></code><span class="why">CRM-Historienzeilen</span></div></div><div class="arrow">›</div><div class="step"><div class="num">3</div><div class="stxt"><b>Codes übersetzen</b><code><span class="f">DECODE</span>(tier_code, <span class="s">&#x27;G&#x27;</span>, <span class="s">&#x27;Gold&#x27;</span>, <span class="s">&#x27;Unknown&#x27;</span>)</code><span class="why">Ein-Buchstaben-Codes</span></div></div><div class="arrow">›</div><div class="step"><div class="num">4</div><div class="stxt"><b>Arrays auflösen</b><code><span class="f">POSEXPLODE</span>(items) <span class="k">AS</span> (item_pos, item)</code><span class="why">Webbestellungen (JSON)</span></div></div><div class="arrow">›</div><div class="step"><div class="num">5</div><div class="stxt"><b>Quellen stapeln</b><code>pos_orders <span class="k">UNION</span> <span class="k">ALL</span> web_orders</code><span class="why">Café + Onlineshop</span></div></div><div class="arrow">›</div><div class="step"><div class="num">6</div><div class="stxt"><b>Systeme integrieren</b><code><span class="k">FULL</span> <span class="k">OUTER</span> <span class="k">JOIN</span> <span class="k">ON</span> <span class="f">LOWER</span>(<span class="f">TRIM</span>(email))</code><span class="why">CRM + Onlineshop</span></div></div><div class="arrow">›</div><div class="step"><div class="num">7</div><div class="stxt"><b>Anreichern</b><code><span class="k">LEFT</span> <span class="k">JOIN</span> · <span class="k">GROUP</span> <span class="k">BY</span> · <span class="k">FILTER</span> · <span class="f">MAX_BY</span></code><span class="why">Dimensionen und KPIs</span></div></div><div class="arrow">›</div><div class="step"><div class="num">8</div><div class="stxt"><b>Gast-Zeile & Tests</b><code><span class="f">COALESCE</span>(key, -<span class="n">1</span>) · <span class="k">MINUS</span> beidseitig</code><span class="why">nachweisbar korrekt</span></div></div></div></section>
+<div class="grid">
+  <div class="col"><section class="card "><h2>🧭 So wertet SQL eine Abfrage aus</h2>
+<table class="order">
+<tr><td>1</td><td><b>FROM / JOIN</b></td><td>welche Tabellen?</td></tr>
+<tr><td>2</td><td><b>WHERE</b></td><td><i>Zeilen</i> filtern</td></tr>
+<tr><td>3</td><td><b>GROUP BY</b></td><td>Gruppen bilden</td></tr>
+<tr><td>4</td><td><b>HAVING</b></td><td><i>Gruppen</i> filtern</td></tr>
+<tr><td>5</td><td><b>Window-Funktionen</b></td><td><code>… OVER (…)</code></td></tr>
+<tr><td>6</td><td><b>QUALIFY</b></td><td>nach Window-Ergebnissen filtern</td></tr>
+<tr><td>7</td><td><b>SELECT / DISTINCT</b></td><td>Spalten, Aliase</td></tr>
+<tr><td>8</td><td><b>ORDER BY · LIMIT</b></td><td>sortieren, begrenzen</td></tr>
+</table>
+<p class="note">Darum kennt <code>WHERE</code> keine <code>SELECT</code>-Aliase und kann keine Aggregate nutzen.</p>
+</section><section class="card "><h2>🎯 Zeilen filtern – WHERE</h2><pre class="code"><span class="k">SELECT</span> order_id, order_ts, payment_method
+<span class="k">FROM</span> silver.sales_order
+<span class="k">WHERE</span> store_id = <span class="n">2</span>
+  <span class="k">AND</span> order_date &gt;= <span class="f">current_date</span>() - <span class="k">INTERVAL</span> <span class="n">7</span> DAYS
+  <span class="k">AND</span> payment_method <span class="k">IN</span> (<span class="s">&#x27;Girocard&#x27;</span>, <span class="s">&#x27;Cash&#x27;</span>)
+  <span class="k">AND</span> loyalty_card_no <span class="k">IS</span> <span class="k">NOT</span> <span class="k">NULL</span></pre>
+<table class="mini">
+<tr><td><code>NULL = NULL</code></td><td><code>NULL</code> – nicht wahr! Zeile fällt weg</td></tr>
+<tr><td><code>col IS NULL</code></td><td>so geht's richtig</td></tr>
+<tr><td><code>tier &lt;&gt; 'Gold'</code></td><td>verwirft auch <code>NULL</code>-Stufen</td></tr>
+</table>
+</section><section class="card "><h2>📊 Aggregieren – GROUP BY · HAVING</h2><pre class="code"><span class="k">SELECT</span> p.product_name, <span class="f">SUM</span>(l.quantity) <span class="k">AS</span> units_sold
+<span class="k">FROM</span> silver.sales_order_line <span class="k">AS</span> l
+<span class="k">INNER</span> <span class="k">JOIN</span> silver.product <span class="k">AS</span> p
+    <span class="k">ON</span> l.product_id = p.product_id
+<span class="k">WHERE</span> l.quantity &gt; <span class="n">0</span>           <span class="c">-- Zeilen: vorher</span>
+<span class="k">GROUP</span> <span class="k">BY</span> p.product_name
+<span class="k">HAVING</span> <span class="f">SUM</span>(l.quantity) &lt; <span class="n">5000</span>  <span class="c">-- Gruppen: danach</span></pre>
+<p class="note">Übrige Spalten gehören in <code>GROUP BY</code> (oder <code>GROUP BY ALL</code>). Aggregate <b>ignorieren NULLs</b>.</p>
+<pre class="code"><span class="f">COUNT</span>(<span class="k">DISTINCT</span> order_id)
+    <span class="k">FILTER</span> (<span class="k">WHERE</span> sales_channel = <span class="s">&#x27;Online&#x27;</span>)   <span class="k">AS</span> online,
+<span class="f">SUM</span>(gross_revenue_eur)
+    <span class="k">FILTER</span> (<span class="k">WHERE</span> sales_channel = <span class="s">&#x27;In-store&#x27;</span>) <span class="k">AS</span> cafe</pre><p class="note"><b>FILTER (WHERE …)</b>: mehrere bedingte KPIs in einem Durchlauf.</p></section><section class="card "><h2>➕ Zwischensummen – ROLLUP · CUBE</h2><pre class="code"><span class="k">SELECT</span> s.store_name, p.product_category,
+       <span class="f">SUM</span>(f.gross_revenue_eur)     <span class="k">AS</span> revenue_eur,
+       <span class="f">GROUPING</span>(p.product_category) <span class="k">AS</span> is_store_total
+<span class="k">FROM</span> gold.fact_coffee_sales <span class="k">AS</span> f
+<span class="k">INNER</span> <span class="k">JOIN</span> gold.dim_store <span class="k">AS</span> s
+    <span class="k">ON</span> f.store_key = s.store_key
+<span class="k">INNER</span> <span class="k">JOIN</span> gold.dim_product <span class="k">AS</span> p
+    <span class="k">ON</span> f.product_key = p.product_key
+<span class="k">GROUP</span> <span class="k">BY</span> <span class="k">ROLLUP</span> (s.store_name, p.product_category)</pre>
+<p class="note"><code>ROLLUP (a, b)</code> → (a, b) · (a) · gesamt &nbsp;|&nbsp; <code>CUBE (a, b)</code> → (a, b) · (a) · (b) · gesamt &nbsp;|&nbsp; <code>GROUPING(col) = 1</code>: dieses <code>NULL</code> heißt „alle Werte“.</p>
+</section></div>
+  <div class="col"><section class="card wide"><h2>🔗 Joins – Spalten aus mehreren Tabellen verknüpfen</h2><table class="joins"><tr><td><svg viewBox="0 0 50 30" class="venn"><defs><clipPath id="clip-inner"><circle cx="17" cy="15" r="12"/></clipPath></defs><circle cx="33" cy="15" r="12" fill="var(--green)" clip-path="url(#clip-inner)"/><circle cx="17" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/><circle cx="33" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/></svg></td><td><b class="jn">INNER JOIN</b><br>nur Zeilen mit Partner auf beiden Seiten</td><td class="ex">Bestellpositionen × Produkte – unbekannte SKUs fallen weg</td></tr><tr><td><svg viewBox="0 0 50 30" class="venn"><defs><clipPath id="clip-left"><circle cx="17" cy="15" r="12"/></clipPath></defs><circle cx="17" cy="15" r="12" fill="var(--green)"/><circle cx="17" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/><circle cx="33" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/></svg></td><td><b class="jn">LEFT JOIN</b><br>alle linken Zeilen; <code>NULL</code>, wo kein Partner</td><td class="ex">Verkäufe × Kundenkarten – Gäste bleiben im Fakt</td></tr><tr><td><svg viewBox="0 0 50 30" class="venn"><defs><clipPath id="clip-full"><circle cx="17" cy="15" r="12"/></clipPath></defs><circle cx="17" cy="15" r="12" fill="var(--green)"/><circle cx="33" cy="15" r="12" fill="var(--green)"/><circle cx="17" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/><circle cx="33" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/></svg></td><td><b class="jn">FULL OUTER JOIN</b><br>alles von beiden Seiten</td><td class="ex">CRM × Kundenkonten – nur Café, nur online, beides</td></tr><tr><td><svg viewBox="0 0 50 30" class="venn"><defs><clipPath id="clip-semi"><circle cx="17" cy="15" r="12"/></clipPath></defs><circle cx="33" cy="15" r="12" fill="var(--leaf)" clip-path="url(#clip-semi)"/><circle cx="17" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/><circle cx="33" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/></svg></td><td><b class="jn">LEFT SEMI JOIN</b><br>linke Zeilen <b>mit</b> Treffer – nur linke Spalten, nie doppelt</td><td class="ex">Positionen abgeschlossener Bestellungen · = <code>WHERE EXISTS</code></td></tr><tr><td><svg viewBox="0 0 50 30" class="venn"><defs><clipPath id="clip-anti"><circle cx="17" cy="15" r="12"/></clipPath></defs><circle cx="17" cy="15" r="12" fill="var(--green)"/><circle cx="33" cy="15" r="12" fill="#fff"/><circle cx="17" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/><circle cx="33" cy="15" r="12" fill="none" stroke="var(--green)" stroke-width="1.3"/></svg></td><td><b class="jn">LEFT ANTI JOIN</b><br>linke Zeilen <b>ohne</b> Treffer</td><td class="ex">Positionen stornierter Bons, Mitglieder ohne Kauf · = <code>NOT EXISTS</code></td></tr><tr><td><svg viewBox="0 0 50 30" class="venn"><line x1="8" y1="6" x2="35" y2="6" stroke="var(--leaf)" stroke-width="0.8"/><line x1="8" y1="15" x2="35" y2="15" stroke="var(--leaf)" stroke-width="0.8"/><line x1="8" y1="24" x2="35" y2="24" stroke="var(--leaf)" stroke-width="0.8"/><circle cx="8" cy="6" r="2.6" fill="var(--green)"/><circle cx="8" cy="15" r="2.6" fill="var(--green)"/><circle cx="8" cy="24" r="2.6" fill="var(--green)"/><circle cx="17" cy="6" r="2.6" fill="var(--green)"/><circle cx="17" cy="15" r="2.6" fill="var(--green)"/><circle cx="17" cy="24" r="2.6" fill="var(--green)"/><circle cx="26" cy="6" r="2.6" fill="var(--green)"/><circle cx="26" cy="15" r="2.6" fill="var(--green)"/><circle cx="26" cy="24" r="2.6" fill="var(--green)"/><circle cx="35" cy="6" r="2.6" fill="var(--green)"/><circle cx="35" cy="15" r="2.6" fill="var(--green)"/><circle cx="35" cy="24" r="2.6" fill="var(--green)"/></svg></td><td><b class="jn">CROSS JOIN</b><br>jede Kombination, kein <code>ON</code></td><td class="ex">Filiale × Tag – Tage ohne Umsatz finden</td></tr></table><pre class="code"><span class="k">FROM</span> silver.sales_order_line <span class="k">AS</span> l
+<span class="k">INNER</span> <span class="k">JOIN</span> silver.sales_order <span class="k">AS</span> o
+    <span class="k">ON</span> l.order_id = o.order_id
+<span class="k">LEFT</span> <span class="k">JOIN</span> silver.product_price <span class="k">AS</span> pp    <span class="c">-- Range Join: der Preis,</span>
+    <span class="k">ON</span>  l.product_id = pp.product_id    <span class="c">-- der am Bestelltag gilt</span>
+    <span class="k">AND</span> o.order_date <span class="k">BETWEEN</span> pp.valid_from
+        <span class="k">AND</span> <span class="f">COALESCE</span>(pp.valid_to, <span class="k">DATE</span><span class="s">&#x27;9999-12-31&#x27;</span>)</pre></section><section class="card "><h2>🧯 Join-Stolperfallen</h2>
+<ol>
+<li><b>Still verlorene Zeilen</b> – ein <code>INNER JOIN</code> verwirft Zeilen ohne Partner. <code>COUNT(*)</code> vorher und nachher vergleichen.</li>
+<li><b>Unsaubere Schlüssel</b> – Groß-/Kleinschreibung, Leerzeichen, Typen. Erst normalisieren: <code>LOWER(TRIM(email))</code>, <code>CAST(id AS INT)</code>. <code>NULL</code>-Schlüssel finden nie einen Partner.</li>
+<li><b>Fan-out</b> – mehrere Zeilen pro Schlüssel rechts vervielfachen die linken Zeilen (und verdoppeln den Umsatz). Rechte Seite erst eindeutig machen (<code>QUALIFY</code>, <code>GROUP BY</code>).</li>
+<li><b>LEFT JOIN wird zum INNER JOIN</b> – eine <code>WHERE</code>-Bedingung auf die rechte Tabelle entfernt die <code>NULL</code>-Zeilen wieder. Sie gehört ins <code>ON</code>.</li>
+</ol>
+</section><section class="card wide"><h2>✅ Den Gold Layer prüfen</h2><pre class="code"><span class="c">-- ① der Primärschlüssel ist eindeutig          → 0 Zeilen</span>
+<span class="k">SELECT</span> customer_key <span class="k">FROM</span> gold.dim_customer
+<span class="k">GROUP</span> <span class="k">BY</span> customer_key <span class="k">HAVING</span> <span class="f">COUNT</span>(*) &gt; <span class="n">1</span>;
+<span class="c">-- ② jede Faktzeile findet ihre Dimensionszeile → 0 Zeilen</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> gold.fact_coffee_sales <span class="k">AS</span> f
+<span class="k">LEFT</span> <span class="k">ANTI</span> <span class="k">JOIN</span> gold.dim_customer <span class="k">AS</span> d
+    <span class="k">ON</span> f.customer_key = d.customer_key;
+<span class="c">-- ③ nichts verloren: die Summen stimmen         → gleich</span>
+<span class="k">SELECT</span> <span class="f">SUM</span>(quantity)      <span class="k">FROM</span> silver.sales_order_line;
+<span class="k">SELECT</span> <span class="f">SUM</span>(quantity_sold) <span class="k">FROM</span> gold.fact_coffee_sales;
+<span class="c">-- ④ neue = alte Tabelle, in beide Richtungen   → 0 Zeilen</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> new_table <span class="k">MINUS</span> <span class="k">SELECT</span> * <span class="k">FROM</span> old_table;
+<span class="k">SELECT</span> * <span class="k">FROM</span> old_table <span class="k">MINUS</span> <span class="k">SELECT</span> * <span class="k">FROM</span> new_table;</pre></section></div>
+  <div class="col"><section class="card "><h2>🥞 Mengenoperatoren – Zeilen kombinieren</h2>
+<table class="mini">
+<tr><td><code>UNION ALL</code></td><td>alles stapeln, Duplikate bleiben – <b>der Standard</b></td></tr>
+<tr><td><code>UNION</code></td><td>stapeln und Duplikate entfernen</td></tr>
+<tr><td><code>MINUS</code> = <code>EXCEPT</code></td><td>im ersten Ergebnis, nicht im zweiten</td></tr>
+<tr><td><code>INTERSECT</code></td><td>in beiden Ergebnissen</td></tr>
+</table>
+<p class="note">Gleiche Spaltenanzahl, kompatible Typen, Zuordnung <b>nach Position</b>; die Namen kommen aus der ersten Abfrage.</p>
+<pre class="code"><span class="k">SELECT</span> order_id, <span class="s">&#x27;In-store&#x27;</span> <span class="k">AS</span> channel <span class="k">FROM</span> pos_orders
+<span class="k">UNION</span> <span class="k">ALL</span>
+<span class="k">SELECT</span> order_id, <span class="s">&#x27;Online&#x27;</span>   <span class="k">AS</span> channel <span class="k">FROM</span> web_orders</pre></section><section class="card "><h2>🧱 WITH … AS – Bausteine benennen</h2><pre class="code"><span class="k">WITH</span> active_card <span class="k">AS</span> (
+    <span class="k">SELECT</span> customer_id, loyalty_tier
+    <span class="k">FROM</span> silver.loyalty_card
+    <span class="k">WHERE</span> is_active
+),
+orders <span class="k">AS</span> (
+    <span class="k">SELECT</span> customer_key, <span class="f">COUNT</span>(<span class="k">DISTINCT</span> order_id) <span class="k">AS</span> n
+    <span class="k">FROM</span> gold.fact_coffee_sales
+    <span class="k">GROUP</span> <span class="k">BY</span> customer_key
+)
+<span class="k">SELECT</span> c.customer_id, a.loyalty_tier, o.n <span class="k">AS</span> orders
+<span class="k">FROM</span> silver.customer <span class="k">AS</span> c
+<span class="k">LEFT</span> <span class="k">JOIN</span> active_card <span class="k">AS</span> a
+    <span class="k">ON</span> c.customer_id = a.customer_id
+<span class="k">LEFT</span> <span class="k">JOIN</span> orders <span class="k">AS</span> o
+    <span class="k">ON</span> c.customer_id = o.customer_key</pre><p class="note">Von oben nach unten lesen · eine Frage pro CTE · jeden Block einzeln testen.</p></section><section class="card "><h2>🌳 WITH RECURSIVE – Hierarchien</h2><pre class="code"><span class="k">WITH</span> <span class="k">RECURSIVE</span> org (employee_id, full_name, level) <span class="k">AS</span> (
+    <span class="k">SELECT</span> employee_id, full_name, <span class="n">1</span>      <span class="c">-- ① Anker</span>
+    <span class="k">FROM</span> silver.employee
+    <span class="k">WHERE</span> manager_id <span class="k">IS</span> <span class="k">NULL</span>
+    <span class="k">UNION</span> <span class="k">ALL</span>
+    <span class="k">SELECT</span> e.employee_id, e.full_name, o.level + <span class="n">1</span>  <span class="c">-- ②</span>
+    <span class="k">FROM</span> silver.employee <span class="k">AS</span> e
+    <span class="k">INNER</span> <span class="k">JOIN</span> org <span class="k">AS</span> o <span class="k">ON</span> e.manager_id = o.employee_id
+)
+<span class="k">SELECT</span> * <span class="k">FROM</span> org <span class="k">ORDER</span> <span class="k">BY</span> level</pre><p class="note">Endet, sobald ein Schritt keine neuen Zeilen findet. Kleine, feste Tiefe? Dann reichen Self-Joins.</p></section><section class="card "><h2>👤 Der Unknown Member</h2><pre class="code"><span class="k">SELECT</span> customer_key, loyalty_segment, city
+<span class="k">FROM</span> known_customers
+<span class="k">UNION</span> <span class="k">ALL</span>
+<span class="k">SELECT</span> -<span class="n">1</span>, <span class="s">&#x27;Guest&#x27;</span>, <span class="s">&#x27;Unknown&#x27;</span>  <span class="c">-- „unbekannt“</span></pre><p class="note">Fakten erhalten <code>COALESCE(customer_key, -1)</code> → keine verlorenen Zeilen, ein <b>Guest</b>-Eintrag im Report.</p></section></div>
+  <div class="col"><section class="card "><h2>🪟 Window-Funktionen – auf andere Zeilen schauen</h2>
+<pre class="code anat"><span class="f">FUNCTION</span>(…) <span class="k">OVER</span> (<span class="k">PARTITION BY</span> &lt;Gruppe&gt; <span class="k">ORDER BY</span> &lt;Sortierung&gt;)</pre>
+<table class="mini">
+<tr><td><code>ROW_NUMBER()</code></td><td>1, 2, 3 … pro Partition – Duplikate, „erste Bestellung“</td></tr>
+<tr><td><code>RANK()</code> · <code>DENSE_RANK()</code></td><td>Ränge mit Gleichstand (1, 1, 3 · 1, 1, 2)</td></tr>
+<tr><td><code>SUM(x) OVER (PARTITION BY g)</code></td><td>Gruppensumme neben jeder Zeile</td></tr>
+<tr><td><code>SUM(x) OVER (… ORDER BY d)</code></td><td>laufende Summe</td></tr>
+<tr><td><code>LAG(x)</code> · <code>LEAD(x)</code></td><td>Wert der vorherigen · nächsten Zeile</td></tr>
+</table>
+<pre class="code"><span class="k">SELECT</span> *                         <span class="c">-- neueste CRM-Version</span>
+<span class="k">FROM</span> bronze.crm_customers
+<span class="k">QUALIFY</span> <span class="f">ROW_NUMBER</span>() <span class="k">OVER</span> (<span class="k">PARTITION</span> <span class="k">BY</span> customer_id
+                           <span class="k">ORDER</span> <span class="k">BY</span> updated_at <span class="k">DESC</span>) = <span class="n">1</span></pre><p class="note"><b>Anders als GROUP BY behalten Window-Funktionen jede Zeile.</b> <code>QUALIFY</code> filtert darauf – wie <code>HAVING</code> auf Aggregate.</p></section><section class="card "><h2>🧰 Funktionen für den Gold Layer</h2><div class="fn"><div class="fnh"><b>EXPLODE · POSEXPLODE</b> <span>eine Zeile pro Array-Element (+ Position)</span></div><pre class="code"><span class="k">SELECT</span> order_id, <span class="f">POSEXPLODE</span>(items) <span class="k">AS</span> (item_pos, item)
+<span class="k">FROM</span> bronze.web_orders</pre><p class="note"><code>EXPLODE(SEQUENCE(d1, d2, INTERVAL 1 DAY))</code> = eine Zeile pro Tag · leere Arrays verschwinden → <code>EXPLODE_OUTER</code></p></div><div class="fn"><div class="fnh"><b>COALESCE</b> <span>der erste Wert, der nicht NULL ist</span></div><pre class="code"><span class="f">COALESCE</span>(lc.customer_id, wc.customer_id, -<span class="n">1</span>) <span class="k">AS</span> customer_key,
+<span class="f">COALESCE</span>(discount_eur, <span class="n">0</span>)                     <span class="k">AS</span> discount_eur</pre><p class="note">Standardwerte und „die erste Quelle, die es weiß“</p></div><div class="fn"><div class="fnh"><b>CASE · IFF</b> <span>Regeln – das erste wahre WHEN gewinnt</span></div><pre class="code"><span class="k">CASE</span> <span class="k">WHEN</span> total_orders = <span class="n">0</span>    <span class="k">THEN</span> <span class="s">&#x27;Prospect&#x27;</span>
+     <span class="k">WHEN</span> total_orders &gt;= <span class="n">100</span> <span class="k">THEN</span> <span class="s">&#x27;Loyalist&#x27;</span>
+     <span class="k">WHEN</span> total_orders &gt;= <span class="n">10</span>  <span class="k">THEN</span> <span class="s">&#x27;Regular&#x27;</span>
+     <span class="k">ELSE</span> <span class="s">&#x27;Occasional&#x27;</span> <span class="k">END</span>,
+<span class="f">IFF</span>(is_online, <span class="s">&#x27;Online&#x27;</span>, <span class="s">&#x27;In-store&#x27;</span>)</pre><p class="note">ohne <code>ELSE</code> → <code>NULL</code> · <code>IFF</code> für genau zwei Ergebnisse</p></div><div class="fn"><div class="fnh"><b>DECODE</b> <span>Codes übersetzen – ein kompaktes Lookup-CASE</span></div><pre class="code"><span class="f">DECODE</span>(payment_code, <span class="s">&#x27;B&#x27;</span>, <span class="s">&#x27;Cash&#x27;</span>, <span class="s">&#x27;G&#x27;</span>, <span class="s">&#x27;Girocard&#x27;</span>,
+                    <span class="s">&#x27;K&#x27;</span>, <span class="s">&#x27;Credit Card&#x27;</span>, <span class="s">&#x27;Unknown&#x27;</span>)</pre><p class="note">immer einen Standardwert angeben – neue Codes bleiben sichtbar</p></div><div class="fn"><div class="fnh"><b>MAX_BY · MIN_BY</b> <span>der Wert am Maximum / Minimum</span></div><pre class="code"><span class="f">MAX_BY</span>(list_price_eur, valid_from) <span class="k">AS</span> current_price,
+<span class="f">MAX_BY</span>(store_key, orders)          <span class="k">AS</span> favourite_store_key</pre><p class="note">„neueste“, „aktuelle“, „Lieblings-…“ – ohne Self-Join</p></div><div class="fn"><div class="fnh"><b>DATEADD · DATEDIFF</b> <span>mit Datumswerten rechnen</span></div><pre class="code"><span class="k">CAST</span>(<span class="f">DATEADD</span>(<span class="k">DAY</span>, -<span class="n">1</span>, next_valid_from) <span class="k">AS</span> <span class="k">DATE</span>) <span class="k">AS</span> valid_to,
+<span class="f">DATEDIFF</span>(<span class="k">DAY</span>, last_purchase_date, <span class="f">current_date</span>()) <span class="k">AS</span> idle</pre><p class="note"><code>DATEADD</code> liefert einen <b>TIMESTAMP</b> → nach <code>DATE</code> casten · Monatsenden passen (31.1. + 1 Monat = 28.2.)</p></div></section></div>
+</div>
+
+<div class="rules">
+<span><b>Stil:</b> Aliase mit <code>AS</code> · immer <code>INNER JOIN</code>, nie nur <code>JOIN</code> · eine CTE pro Frage · früh mit <code>WHERE</code> filtern · <code>UNION ALL</code>, außer Duplikate sind wirklich unerwünscht · Standardwert in <code>DECODE</code> / <code>CASE</code></span>
+<span class="where"><b>Live ansehen:</b> <code>bundle/src/transformations/</code> (silver · gold) · SQL-Track-Notebooks SQL 1–3 · <code>SQL Lösungen</code></span>
+</div>
+
+</div></body></html>
