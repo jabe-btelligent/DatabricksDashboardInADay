@@ -74,18 +74,18 @@ def build_sources(as_of: Optional[date] = None) -> Dict[str, DataFrame]:
 
     products = src.erp_products(as_of)
     prices = src.erp_product_prices(as_of, window_start)
-    loyalty_cards = src.crm_loyalty_cards(store_rows, window_start, window_end).cache()
-    crm = src.crm_customers(store_rows, loyalty_cards, window_start, as_of).cache()
+    loyalty_cards = src.crm_loyalty_cards(store_rows, window_start, window_end)
+    crm = src.crm_customers(store_rows, loyalty_cards, window_start, as_of)
     crm_current = crm.groupBy("customer_id").agg(F.max_by(F.struct("email", "first_name", "last_name"), "updated_at").alias("c")) \
                      .select("customer_id", "c.*")
-    accounts = src.web_accounts(crm_current, window_start, as_of).cache()
+    accounts = src.web_accounts(crm_current, window_start, as_of)
 
     orders = reduce(
         DataFrame.unionByName,
         [build_store_orders(cfg, opened[cfg["store_key"]], window_start, window_end, holidays) for cfg in STORE_CONFIGS],
     )
-    orders = src.enrich_orders(orders, src.cashiers_by_store(employee_rows), loyalty_cards, window_end).cache()
-    lines = src.order_lines(orders, prices, products).cache()
+    orders = src.enrich_orders(orders, src.cashiers_by_store(employee_rows), loyalty_cards, window_end)
+    lines = src.order_lines(orders, prices, products)
 
     tables = {
         **src.pos_tables(orders, lines),
