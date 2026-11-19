@@ -42,11 +42,11 @@ Before you start, please verify:
 
 **Step 1: Open Your Dashboard and Switch to Edit Mode**
 
-Lab 0 created an editable dashboard for you named **Sunny Bay Roastery - Sales Report**. It is a branded starting point (title, description, and logo are already in place) that carries the corporate identity so your report looks consistent, and it is your own copy, so you have full edit rights. A read-only **[Final]** version is also deployed as a reference you can compare against at the end.
+Lab 0 created an editable dashboard for you named **Sunny Bay Germany - Sales Report**. It is a branded starting point (title, description, and logo are already in place) that carries the corporate identity so your report looks consistent, and it is your own copy, so you have full edit rights. A read-only **[Final]** version is also deployed as a reference you can compare against at the end.
 
 1. In the Databricks workspace, open **Dashboards** from the left navigation.
 
-2. Open the Dashboard "Sunny Bay Roastery - Sales Report" — because it is your own draft, it opens directly in the **Dashboard Creator** (edit) view, ready for you to build on.
+2. Open the Dashboard "Sunny Bay Germany - Sales Report" — because it is your own draft, it opens directly in the **Dashboard Creator** (edit) view, ready for you to build on.
 
 **Step 2: Configure the Metric View as a Data Source**
 

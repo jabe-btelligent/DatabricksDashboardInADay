@@ -74,7 +74,7 @@ Example questions:
 ```sql
 SELECT measure(total_gross_revenue_eur),
        date_year
-FROM sunny_bay_roastery.gold.sm_fact_coffee_sales_genie
+FROM sunny_bay_germany.gold.sm_fact_coffee_sales_genie
 WHERE date_year = :year_param
 GROUP BY ALL
 ORDER BY 1 ASC;

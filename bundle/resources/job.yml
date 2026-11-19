@@ -2,7 +2,7 @@
 
 resources:
   jobs:
-    sunny_bay_roastery_job:
+    sunny_bay_germany_job:
       parameters:
         - name: catalog
           default: ${var.catalog}
@@ -17,7 +17,7 @@ resources:
         - name: warehouse_id
           default: ${var.warehouse_id}
 
-      name: "Sunny Bay Roastery Job"
+      name: "Sunny Bay Germany Job"
       tasks:
         - task_key: generate_data
           notebook_task:
@@ -26,7 +26,7 @@ resources:
           depends_on:
             - task_key: generate_data
           pipeline_task:
-            pipeline_id: ${resources.pipelines.sunny_bay_roastery_pipeline.id}
+            pipeline_id: ${resources.pipelines.sunny_bay_germany_pipeline.id}
             # The source files are regenerated on every run (rolling 24-month window),
             # so the streaming tables are rebuilt from scratch instead of appending.
             full_refresh: true

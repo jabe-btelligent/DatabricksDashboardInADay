@@ -5,8 +5,8 @@ resources:
     # participants cannot build on it. Instead, Lab 0 creates an *editable*
     # (unmanaged) copy of dashboard_template.lvdash.json in each participant's
     # own workspace. Only the read-only "[Final]" answer key is bundle-managed.
-    sunny_bay_roastery_dashboard_final:
-      display_name: "[Final] Sunny Bay Roastery - Sales Report"
+    sunny_bay_germany_dashboard_final:
+      display_name: "[Final] Sunny Bay Germany - Sales Report"
       file_path: ../src/dashboards/dashboard_final.lvdash.json
       warehouse_id: ${var.warehouse_id}
       dataset_catalog: ${var.catalog}

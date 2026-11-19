@@ -42,7 +42,7 @@ SDP allows non-engineers to safely contribute to data transformation logic.
   <img src="../artifacts/screenshots/SDP_JobPipelines.png" width="15%">
 </div>
 
-2. Click on the pipeline with the **suffix sunny_bay_roastery**
+2. Click on the pipeline with the **suffix sunny_bay_germany**
 
 3. Explore the Pipeline Monitoring UI
 

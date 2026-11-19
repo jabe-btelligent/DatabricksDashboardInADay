@@ -50,7 +50,7 @@ They allow consistent reporting, simplify complex SQL logic, and centralize metr
 
 4. Click on `Select source` to choose the fact table.
 
-5. You now need to navigate to your source table again which is again `sunny_bay_roastery.gold.fact_coffee_sales`. Navigate to it using the Unity Catalog hierarchy. Add it to the Metric View.
+5. You now need to navigate to your source table again which is again `sunny_bay_germany.gold.fact_coffee_sales`. Navigate to it using the Unity Catalog hierarchy. Add it to the Metric View.
 
 ![alt text](./artifacts/screenshots/MetricView_UI_SelectSource.png)
 
@@ -220,17 +220,17 @@ materialization:
 ```YAML
 version: 1.1
 
-source: sunny_bay_roastery.gold.fact_coffee_sales
+source: sunny_bay_germany.gold.fact_coffee_sales
 
 joins:
   - name: product
-    source: sunny_bay_roastery.gold.dim_product
+    source: sunny_bay_germany.gold.dim_product
     "on": source.product_key = product.product_key
   - name: date
-    source: sunny_bay_roastery.gold.dim_date
+    source: sunny_bay_germany.gold.dim_date
     "on": source.date_key = date.date_key
   - name: store
-    source: sunny_bay_roastery.gold.dim_store
+    source: sunny_bay_germany.gold.dim_store
     "on": source.store_key = store.store_key
 
 dimensions:

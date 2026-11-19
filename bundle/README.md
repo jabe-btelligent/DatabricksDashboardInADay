@@ -15,8 +15,8 @@ If you have the [Databricks CLI](https://docs.databricks.com/dev-tools/cli/) con
 locally, you can deploy and run the bundle directly:
 
 ```bash
-databricks bundle deploy -t dev --var catalog=sunny_bay_roastery
-databricks bundle run sunny_bay_roastery_job -t dev --var catalog=sunny_bay_roastery
+databricks bundle deploy -t dev --var catalog=sunny_bay_germany
+databricks bundle run sunny_bay_germany_job -t dev --var catalog=sunny_bay_germany
 ```
 
 The catalog must exist before deploy (the pipeline's target catalog is validated at
