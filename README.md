@@ -51,13 +51,16 @@ The labs are modular — you can start from any lab. Lab 0 pre-deploys all neces
 
 ### 🧮 SQL Track (Optional)
 
-Sunny Bay's raw data comes from several operational source systems – café cash registers (POS), the online shop, CRM, ERP and HR. The pipeline integrates them into silver business objects and a gold star schema. The SQL Track teaches the SQL concepts needed to build such a gold layer, with tiny examples, exercises on the Sunny Bay data and hidden solutions. It is the one part of the workshop where participants write SQL themselves.
+Sunny Bay's raw data comes from several operational source systems – café cash registers (POS), the online shop, CRM, ERP and HR. The pipeline integrates them into silver business objects and a gold star schema. The SQL Track teaches the SQL concepts needed to build such a gold layer, with tiny examples, exercises on the Sunny Bay data and a separate **SQL Solutions** notebook. Each lab is a **SQL notebook**: open it in your workspace, attach serverless compute or a SQL warehouse, and edit and run every query right in place. It is the one part of the workshop where participants write SQL themselves.
 
 | Lab | Concepts | Prerequisite |
 |-----|----------|--------------|
-| **SQL 1 – Filtering, Aggregating and Joining** ([guide](labs/SQL%20Track/SQL%201%20-%20Filtering,%20Aggregating%20and%20Joining.md)) | WHERE, GROUP BY / HAVING, INNER / LEFT / FULL OUTER / SEMI / ANTI / CROSS JOIN | Lab 0 |
-| **SQL 2 – Combining and Analyzing Data** ([guide](labs/SQL%20Track/SQL%202%20-%20Combining%20and%20Analyzing%20Data.md)) | UNION / MINUS / INTERSECT, WITH … AS, window functions with PARTITION BY, ROLLUP / CUBE, WITH RECURSIVE | SQL 1 |
-| **SQL 3 – Functions for the Gold Layer** ([guide](labs/SQL%20Track/SQL%203%20-%20Functions%20for%20the%20Gold%20Layer.md)) | EXPLODE, QUALIFY, COALESCE, CASE / IFF, DECODE, MAX_BY, FILTER (WHERE …), DATEADD – plus a capstone that rebuilds a gold dimension | SQL 2 |
+| **SQL 1 – Filtering, Aggregating and Joining** ([guide](labs/SQL%20Track/SQL%201%20-%20Filtering,%20Aggregating%20and%20Joining.ipynb)) | WHERE, GROUP BY / HAVING, INNER / LEFT / FULL OUTER / SEMI / ANTI / CROSS JOIN | Lab 0 |
+| **SQL 2 – Combining and Analyzing Data** ([guide](labs/SQL%20Track/SQL%202%20-%20Combining%20and%20Analyzing%20Data.ipynb)) | UNION / MINUS / INTERSECT, WITH … AS, window functions with PARTITION BY, ROLLUP / CUBE, WITH RECURSIVE | SQL 1 |
+| **SQL 3 – Functions for the Gold Layer** ([guide](labs/SQL%20Track/SQL%203%20-%20Functions%20for%20the%20Gold%20Layer.ipynb)) | EXPLODE, QUALIFY, COALESCE, CASE / IFF, DECODE, MAX_BY, FILTER (WHERE …), DATEADD | SQL 2 |
+| **SQL Solutions** ([notebook](labs/SQL%20Track/SQL%20Solutions.ipynb)) | Runnable solutions of all 🏋️ exercises of SQL 1–3 – try each exercise yourself first | – |
+
+For instructors: each lab has a presentation in [labs/SQL Track/Slides/](labs/SQL%20Track/Slides/) that explains *why* and *how* the concepts are used – open it in the workspace (or on GitHub) and present it before the hands-on part.
 
 ### 🔎 Deep Dives (Optional)
 
