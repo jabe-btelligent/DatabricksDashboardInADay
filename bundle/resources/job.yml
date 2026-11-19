@@ -18,6 +18,8 @@ resources:
           default: ${var.warehouse_id}
 
       name: "Sunny Bay Germany Job"
+      tags:
+        project: sunny_bay_germany
       tasks:
         - task_key: generate_data
           notebook_task:

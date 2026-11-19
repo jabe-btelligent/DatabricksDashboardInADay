@@ -23,6 +23,14 @@ Each lab markdown file in `labs/` follows a consistent structure:
   - **Code blocks** with example SQL/Python when participants need to write code.
 - **Final Steps / What Happens Next** — summary and transition to the next lab.
 
+The **SQL Track** labs (`labs/SQL Track/*.ipynb`) are **Databricks SQL notebooks** (notebook metadata `application/vnd.databricks.v1+notebook` → `"language": "sql"`) with the same structure, so participants can edit and run every query inline:
+
+- Explanations, steps and tasks are **markdown cells**; every runnable query is its own **SQL code cell** (no ` ```sql ` fences for runnable code).
+- Each **🏋️ Your turn** exercise is followed by a SQL cell titled `🏋️ Your turn` – empty (`-- 🏋️ Your turn: write your query here and run the cell`) or, for harder exercises, a **starting point** with `___` blanks (`-- 🏋️ Your turn – starting point: replace every ___ and run the cell`; the blanks cover the concept being practised, and the filled-in starting point must return the same result as the solution) – and then a one-line pointer to its solution: `> **💡 Solution:** stuck or done? Compare with the notebook **SQL Solutions** in this folder → *SQL 1 › Step 2 › Task 4*.`
+- The solutions are **not** in the lab notebooks. They live in `labs/SQL Track/SQL Solutions.ipynb`: one `## <lab title>` section per lab, and per exercise a `### SQL n › Step x › Task y: <step title>` markdown cell with the exercise text, followed by the solution as runnable SQL cells (plus explanation markdown cells). Keep the labels in the lab pointers and in the solutions notebook in sync.
+- `labs/SQL Track/Slides/` holds one presentation per SQL lab (same file name as the notebook, `.md`). Slides are separated by `---`, use the same emoji blockquote callouts as the notebooks (they are shown in the Databricks file viewer), show a tiny example with its **actual** result table, and point to the pipeline file that uses the concept. Reuse the notebooks' examples where possible (the SQL 1 SEMI / ANTI JOIN slides deliberately use the order-line example from `silver/sales_order_line.sql`).
+- Databricks does not render GitHub alerts (`> [!TIP]`). In notebooks, write callouts as plain blockquotes with an emoji label: `> **📝 Note:**`, `> **✨ Tip:**`, `> **❗ Important:**`, `> **⚠️ Warning:**`, `> **🛑 Caution:**`.
+
 ## Markdown Formatting Rules
 
 - Each numbered task must be separated by a **blank line** so it renders as a distinct list item.
@@ -35,18 +43,9 @@ Each lab markdown file in `labs/` follows a consistent structure:
   ```
 - Code blocks use fenced triple backticks with a language tag (`sql`, `python`).
 - SQL style (labs, pipeline and notebooks): introduce every table or subquery alias in `FROM` / `JOIN` with `AS` (e.g. `FROM silver.${prefix}product AS p`) and always write the join type explicitly (`INNER JOIN`, never a plain `JOIN`).
-- Exercise solutions (SQL Track) are hidden in a collapsible block, with a blank line after `<summary>` and before `</details>` so the content renders as Markdown:
-  ```html
-  <details>
-  <summary>💡 Solution</summary>
-
-  ...solution...
-
-  </details>
-  ```
 - Do not add trailing whitespace or empty cells/sections.
 - **Documentation links must always point to the AWS docs** (`https://docs.databricks.com/aws/en/...`). Never link to the Azure (`learn.microsoft.com/azure/databricks/...`) or GCP documentation.
-- Use GitHub-style alerts for callouts:
+- Use GitHub-style alerts for callouts in markdown labs (notebooks use the emoji blockquotes described above):
   - `> [!NOTE]` — Highlights information that users should take into account, even when skimming.
   - `> [!TIP]` — Helpful advice for doing things better or more easily.
   - `> [!IMPORTANT]` — Crucial information necessary for users to succeed.

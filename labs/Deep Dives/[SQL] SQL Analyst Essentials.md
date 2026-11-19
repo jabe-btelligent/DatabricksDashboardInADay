@@ -322,7 +322,7 @@ Genie Code can name the dashboard, add the datasets and create the visuals. Refi
 
 - Lakeflow Designer lets you *see* the same joins and transformations you practised in the SQL Track, but as an automated, orchestrated pipeline.
 - For SQL analysts, this is valuable context: you can inspect what the data engineering team has built without needing to read or write Spark code.
-- The pipeline runs plain SQL – in the SQL 3 capstone you rebuilt `dim_customer` by hand and proved it is identical to the pipeline's table. Both are valid approaches depending on the use case (automated ETL vs. ad-hoc analysis).
+- The pipeline runs plain SQL – the same joins and functions you can write by hand in the SQL editor or a notebook. Both are valid approaches depending on the use case (automated ETL vs. ad-hoc analysis).
 
 ## Final Steps
 
